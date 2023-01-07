@@ -21,4 +21,6 @@ public class MemerReqDto {
                 .roles(Collection.singletonList(Role.ROLE_MEMBER))
                 .build();
     }
+
+
 }
