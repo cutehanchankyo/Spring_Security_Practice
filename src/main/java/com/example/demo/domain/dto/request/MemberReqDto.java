@@ -8,7 +8,7 @@ import java.util.Collection;
 
 @Getter
 @AllArgsConstructor
-public class MemerReqDto {
+public class MemberReqDto {
     private String email;
     private String password;
     private String name;
