@@ -4,10 +4,7 @@ import com.example.demo.domain.dto.response.MemberResDto;
 import com.example.demo.domain.service.AdminService;
 import com.example.demo.domain.service.MemberService;
 import lombok.RequiredArgsConstructor;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/v1/admin")
@@ -27,7 +24,7 @@ public class RefrashTokenController {
         return responseService.getListResult(memberService.getAllMember());
     }
 
-    @GetMapping("/grant/member/{memberIdx}")
+    @PatchMapping ("/grant/member/{memberIdx}")
     public CommonResultResponse grantRole(@PathVariable Long memberIdx){
         adminService.grantRole(memberIdx);
         return responseService.getSuccessResult();
