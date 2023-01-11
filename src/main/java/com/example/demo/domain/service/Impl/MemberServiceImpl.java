@@ -12,10 +12,8 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.awt.*;
-import java.util.DuplicateFormatFlagsException;
-import java.util.Map;
-import java.util.Objects;
-import java.util.Optional;
+import java.awt.List;
+import java.util.*;
 
 @Service
 @RequiredArgsConstructor
@@ -30,8 +28,8 @@ public class MemberServiceImpl implements MemberService {
 
     @Override
     @Transactional(rollbackFor = Exception.class)
-    public Long join(MemberReqDto memberReqDto){
-        if(!memberRepository.findByEmail(memberReqDto.getEmail()).isEmpty()){
+    public Long join(MemberReqDto memberReqDto) {
+        if (!memberRepository.findByEmail(memberReqDto.getEmail()).isEmpty()) {
             throw new DuplicateFormatFlagsException("Memeber already exists", ErrorCode.DUPLICATE_MEMBER);
         }
         Member member = memberReqDto.toEntity(passwordEncoder.encode(memberReqDto.getPassword()));
@@ -40,13 +38,13 @@ public class MemberServiceImpl implements MemberService {
 
     @Override
     @Transactional(rollbackFor = Exception.class)
-    public Map<String, Objects> login(SignInDto signInDto){
-        Optional<Member> byEmail  = memberRepository.findByEmail(signInDto.getEmail());
-        if(byEmail.isEmpty()){
-            throw new MemberNotFindException("Can't find member by email",ErrorCode.MEMBER_NOT_FIND);
+    public Map<String, Objects> login(SignInDto signInDto) {
+        Optional<Member> byEmail = memberRepository.findByEmail(signInDto.getEmail());
+        if (byEmail.isEmpty()) {
+            throw new MemberNotFindException("Can't find member by email", ErrorCode.MEMBER_NOT_FIND);
         }
         Member member = byEmail.get();
-        if(!passwordEncoder.matches(signInDto.getPassword(), member.getPassword())){
+        if (!passwordEncoder.matches(signInDto.getPassword(), member.getPassword())) {
             throw new PasswordNotFindException("Password Not Matches", ErrorCode.PASSWORD_NOT_CORRECT);
         }
         String accessToken = tokenProvider.generateAccessToken(member.getEmail());
@@ -58,14 +56,14 @@ public class MemberServiceImpl implements MemberService {
 
     @Override
     @Transactional(rollbackFor = Exception.class)
-    public void logout(){
+    public void logout() {
         Member member = currentMemberUtil.getCurrentMember();
-        member.updateRefrachToken(null);
+        member.updateRefreshToken(null);
     }
 
     @Override
     @Transactional(readOnly = true, rollbackFor = Exception.class)
-    public MemberResDto getMemberByIdx(Long memberIdx){
+    public MemberResDto getMemberByIdx(Long memberIdx) {
         Member member = memberRepository.findById(memberIdx)
                 .orElseThrow(() -> new MemberNotFindException("Can't find member by email", ErrorCode.MEMBER_NOT_FIND));
         return ResponseDtoUtil.mapping(member, MemberResDto.class);
@@ -73,8 +71,31 @@ public class MemberServiceImpl implements MemberService {
 
     @Override
     @Transactional(readOnly = true, rollbackFor = Exception.class)
-    public List<MemberResDto> getAllMember(){
+    public List<MemberResDto> getAllMember() {
         List<Member> all = memberRepository.findAll();
-        return ResponseDtoUtil.mapAll(all,MemberResDto.class)
+        return ResponseDtoUtil.mapAll(all, MemberResDto.class);
+    }
+
+    @Override
+    @Transactional(rollbackFor = Exception.class)
+    public void withdrawal() {
+        Member member = currentMemberUtil.getCurrentMember();
+        logout();
+        memberRepository.delete(member);
+    }
+
+    @Override
+    @Transactional(readOnly = true, rollbackFor = Exception.class)
+    public MemberResDto findMe() {
+        Member member = currentMemberUtil.getCurrentMember();
+        return ResponseDtoUtil.mapping(member, MemberResDto.class);
+    }
+
+    private Map<String, Objects> getLoginResponse(Member member,String accessToken,String refreshToken){
+        Map<String, Objects> login = new HashMap<>();
+        login.put("member_Id", member.getId());
+        login.put("accessToken", accessToken);
+        login.put("refreshToken", refreshToken);
+        return login;
     }
 }
