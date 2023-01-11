@@ -3,6 +3,7 @@ package com.example.demo.domain.service.Impl;
 import com.example.demo.domain.Member;
 import com.example.demo.domain.dto.request.MemberReqDto;
 import com.example.demo.domain.dto.request.SignInDto;
+import com.example.demo.domain.dto.response.MemberResDto;
 import com.example.demo.domain.repository.MemberRepository;
 import com.example.demo.domain.service.MemberService;
 import lombok.RequiredArgsConstructor;
@@ -10,6 +11,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.awt.*;
 import java.util.DuplicateFormatFlagsException;
 import java.util.Map;
 import java.util.Objects;
@@ -24,6 +26,7 @@ public class MemberServiceImpl implements MemberService {
     private final CurrentMemberUtil currentMemberUtil;
 
     private final MemberReqDto memberReqDto;
+    private final MemberResDto memberResDto;
 
     @Override
     @Transactional(rollbackFor = Exception.class)
@@ -60,4 +63,18 @@ public class MemberServiceImpl implements MemberService {
         member.updateRefrachToken(null);
     }
 
+    @Override
+    @Transactional(readOnly = true, rollbackFor = Exception.class)
+    public MemberResDto getMemberByIdx(Long memberIdx){
+        Member member = memberRepository.findById(memberIdx)
+                .orElseThrow(() -> new MemberNotFindException("Can't find member by email", ErrorCode.MEMBER_NOT_FIND));
+        return ResponseDtoUtil.mapping(member, MemberResDto.class);
+    }
+
+    @Override
+    @Transactional(readOnly = true, rollbackFor = Exception.class)
+    public List<MemberResDto> getAllMember(){
+        List<Member> all = memberRepository.findAll();
+        return ResponseDtoUtil.mapAll(all,MemberResDto.class)
+    }
 }

@@ -6,12 +6,13 @@ import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 
 @Service
 public interface MemberService {
     Long join(MemberReqDto memberReqDto);
 
-    Map<String, Object> login(SignInDto signInDto);
+    Map<String, Objects> login(SignInDto signInDto);
 
     void logout();
 
