@@ -30,29 +30,29 @@ public class MemberServiceImpl implements MemberService {
 
     @Override
     @Transactional(rollbackFor = Exception.class)
-    public Long join(MemberReqDto memberReqDto) {
-        if (!memberRepository.findByEmail(memberReqDto.getEmail()).isEmpty()) {
-            throw new DuplicateFormatFlagsException("Memeber already exists", ErrorCode.DUPLICATE_MEMBER);
+    public Long join(MemberReqDto memberDto){
+        if(!memberRepository.findByEmail(memberDto.getEmail()).isEmpty()){
+            throw new DuplicateMemberException("Member already exists", ErrorCode.DUPLICATE_MEMBER);
         }
-        Member member = memberReqDto.toEntity(passwordEncoder.encode(memberReqDto.getPassword()));
+        Member member = memberDto.toEntity(passwordEncoder.encode(memberDto.getPassword()));
         return memberRepository.save(member).getId();
     }
 
     @Override
     @Transactional(rollbackFor = Exception.class)
-    public Map<String, Objects> login(SignInDto signInDto) {
+    public Map<String, Object> login(SignInDto signInDto){
         Optional<Member> byEmail = memberRepository.findByEmail(signInDto.getEmail());
-        if (byEmail.isEmpty()) {
+        if(byEmail.isEmpty()){
             throw new MemberNotFindException("Can't find member by email", ErrorCode.MEMBER_NOT_FIND);
         }
         Member member = byEmail.get();
-        if (!passwordEncoder.matches(signInDto.getPassword(), member.getPassword())) {
-            throw new PasswordNotFindException("Password Not Matches", ErrorCode.PASSWORD_NOT_CORRECT);
+        if(!passwordEncoder.matches(signInDto.getPassword(), member.getPassword())){
+            throw new PasswordNotCorrectException("Password Not Matches", ErrorCode.PASSWORD_NOT_CORRECT);
         }
         String accessToken = tokenProvider.generateAccessToken(member.getEmail());
         String refreshToken = tokenProvider.generateRefreshToken(member.getEmail());
-        member.updateRefrachToken(refreshToken);
-        Map<String, Objects> loginResponse = getLoginResponse(member, accessToken, refreshToken);
+        member.updateRefreshToken(refreshToken);
+        Map<String, Object> loginResponse = getLoginResponse(member, accessToken, refreshToken);
         return loginResponse;
     }
 
@@ -93,9 +93,10 @@ public class MemberServiceImpl implements MemberService {
         return ResponseDtoUtil.mapping(member, MemberResDto.class);
     }
 
-    private Map<String, Objects> getLoginResponse(Member member,String accessToken,String refreshToken){
-        Map<String, Objects> login = new HashMap<>();
-        login.put("member_Id", member.getId());
+
+    private Map<String, Object> getLoginResponse(Member member, String accessToken, String refreshToken) {
+        Map<String, Object> login = new HashMap<>();
+        login.put("member_id", member.getId());
         login.put("accessToken", accessToken);
         login.put("refreshToken", refreshToken);
         return login;
