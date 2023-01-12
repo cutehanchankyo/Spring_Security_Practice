@@ -3,6 +3,10 @@ package com.example.demo.domain.contoller;
 import com.example.demo.domain.dto.response.MemberResDto;
 import com.example.demo.domain.service.AdminService;
 import com.example.demo.domain.service.MemberService;
+import com.example.demo.global.util.response.ResponseService;
+import com.example.demo.global.util.response.result.CommonResultResponse;
+import com.example.demo.global.util.response.result.ListResultResponse;
+import com.example.demo.global.util.response.result.SingleResultResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 
