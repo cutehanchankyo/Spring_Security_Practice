@@ -52,4 +52,5 @@ public class MemberServiceTest {
         Assertions.assertThat(login.get("member_id")).isEqualTo(member.getId());
     }
 
+
 }
