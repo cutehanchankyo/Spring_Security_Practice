@@ -26,6 +26,7 @@ public class Member {
 
     private String refrashToken;
 
+
     @Enumerated(EnumType.STRING) @Column(name = "Role")
     @ElementCollection(fetch = FetchType.EAGER)
     @CollectionTable(name = "Role", joinColumns = @JoinColumn(name = "id"))
