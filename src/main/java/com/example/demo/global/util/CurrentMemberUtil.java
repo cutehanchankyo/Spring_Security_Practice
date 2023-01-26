@@ -2,6 +2,7 @@ package com.example.demo.global.util;
 
 import com.example.demo.domain.Member;
 import com.example.demo.domain.repository.MemberRepository;
+import com.example.demo.global.configuration.security.auth.AuthDetails;
 import lombok.AllArgsConstructor;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.context.SecurityContextHolder;
