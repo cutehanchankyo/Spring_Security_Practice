@@ -7,7 +7,10 @@ import org.aspectj.apache.bcel.classfile.Unknown;
 @Getter
 @AllArgsConstructor
 public class ErrorResponse {
+
     private boolean success;
+
     private String msg;
+
     private int status;
 }
