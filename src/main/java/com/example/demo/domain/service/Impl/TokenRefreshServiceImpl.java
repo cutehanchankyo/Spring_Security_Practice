@@ -1,7 +1,7 @@
 package com.example.demo.domain.service.Impl;
 
 import antlr.TokenStreamException;
-import com.example.demo.domain.service.TokenRefrachService;
+import com.example.demo.domain.service.TokenRefreshService;
 import com.example.demo.global.configuration.security.jwt.TokenProvider;
 import com.example.demo.global.exception.ErrorCode;
 import lombok.RequiredArgsConstructor;
@@ -13,7 +13,7 @@ import java.util.Map;
 
 @Service
 @RequiredArgsConstructor
-public class TokenRefrachServiceImpl implements TokenRefrachService {
+public class TokenRefreshServiceImpl implements TokenRefreshService {
     private final TokenProvider tokenProvider;
 
     @Override

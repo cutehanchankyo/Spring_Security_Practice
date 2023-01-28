@@ -1,8 +1,8 @@
 package com.example.demo.service;
 
 import com.example.demo.domain.Member;
-import com.example.demo.domain.dto.request.MemberReqDto;
-import com.example.demo.domain.dto.request.SignInDto;
+import com.example.demo.domain.presentation.dto.request.MemberRequest;
+import com.example.demo.domain.presentation.dto.request.SignIn;
 import com.example.demo.domain.repository.MemberRepository;
 import com.example.demo.domain.service.MemberService;
 import org.junit.jupiter.api.*;
@@ -26,14 +26,14 @@ public class MemberServiceTest {
     @BeforeEach
     public void init(){
         memberRepository.deleteAll();
-        MemberReqDto memberReqDto = new MemberReqDto("test@gmail.com","1234","정찬교");
+        MemberRequest memberReqDto = new MemberRequest("test@gmail.com","1234","정찬교");
         memberService.join(memberReqDto);
     }
     @Test
     @Order(1)
     public void joinTest(){
         //given
-        MemberReqDto memberReqDto = new MemberReqDto("test1@gmail.com","1234","정찬교");
+        MemberRequest memberReqDto = new MemberRequest("test1@gmail.com","1234","정찬교");
 
         //whem
         Long join = memberService.join(memberReqDto);
@@ -46,7 +46,7 @@ public class MemberServiceTest {
 
     @Test
     public void loginTest(){
-        SignInDto signInDto = new SignInDto("test@gmail.com", "1234");
+        SignIn signInDto = new SignIn("test@gmail.com", "1234");
         Map<String, Objects> login = memberService.login(signInDto);
         Member member = memberRepository.findById((Long) login.get("member_id")).get();
         Assertions.assertThat(login.get("member_id")).isEqualTo(member.getId());

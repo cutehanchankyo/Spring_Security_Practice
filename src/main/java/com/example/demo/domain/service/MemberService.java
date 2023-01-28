@@ -1,7 +1,7 @@
 package com.example.demo.domain.service;
-import com.example.demo.domain.dto.request.MemberReqDto;
-import com.example.demo.domain.dto.request.SignInDto;
-import com.example.demo.domain.dto.response.MemberResDto;
+import com.example.demo.domain.presentation.dto.request.MemberRequest;
+import com.example.demo.domain.presentation.dto.request.SignIn;
+import com.example.demo.domain.presentation.dto.response.MemberResponse;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -10,17 +10,17 @@ import java.util.Objects;
 
 @Service
 public interface MemberService {
-    Long join(MemberReqDto memberReqDto);
+    Long join(MemberRequest memberReqDto);
 
-    Map<String, Objects> login(SignInDto signInDto);
+    Map<String, Objects> login(SignIn signInDto);
 
     void logout();
 
-    MemberResDto getMemberByIdx(Long memberIdx);
+    MemberResponse getMemberByIdx(Long memberIdx);
 
-    List<MemberResDto> getAllMember();
+    List<MemberResponse> getAllMember();
 
     void withdrawal();
 
-    MemberResDto findMe();
+    MemberResponse findMe();
 }

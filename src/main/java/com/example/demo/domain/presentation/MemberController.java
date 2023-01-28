@@ -1,14 +1,12 @@
-package com.example.demo.domain.contoller;
+package com.example.demo.domain.presentation;
 
-import com.example.demo.domain.dto.request.MemberReqDto;
-import com.example.demo.domain.dto.request.SignInDto;
+import com.example.demo.domain.presentation.dto.request.MemberRequest;
+import com.example.demo.domain.presentation.dto.request.SignIn;
 import com.example.demo.domain.service.MemberService;
 import com.example.demo.global.util.response.ResponseService;
 import com.example.demo.global.util.response.result.CommonResultResponse;
 import com.example.demo.global.util.response.result.SingleResultResponse;
-import lombok.Builder;
 import lombok.RequiredArgsConstructor;
-import org.springframework.security.core.parameters.P;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
@@ -19,13 +17,13 @@ public class MemberController {
     private final ResponseService responseService;
 
     @PostMapping("/join")
-    public CommonResultResponse join(@RequestBody MemberReqDto memberReqDto){
+    public CommonResultResponse join(@RequestBody MemberRequest memberReqDto){
         memberService.join(memberReqDto);
         return responseService.getSuccessResult();
     }
 
     @PostMapping("/login")
-    public SingleResultResponse login(@RequestBody SignInDto signInDto){
+    public SingleResultResponse login(@RequestBody SignIn signInDto){
         return responseService.getSingleResult(memberService.login(signInDto));
     }
 

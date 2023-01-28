@@ -1,9 +1,9 @@
 package com.example.demo.domain.service.Impl;
 
 import com.example.demo.domain.Member;
-import com.example.demo.domain.dto.request.MemberReqDto;
-import com.example.demo.domain.dto.request.SignInDto;
-import com.example.demo.domain.dto.response.MemberResDto;
+import com.example.demo.domain.presentation.dto.request.MemberRequest;
+import com.example.demo.domain.presentation.dto.request.SignIn;
+import com.example.demo.domain.presentation.dto.response.MemberResponse;
 import com.example.demo.domain.repository.MemberRepository;
 import com.example.demo.domain.service.MemberService;
 import com.example.demo.global.configuration.security.jwt.TokenProvider;
@@ -29,12 +29,12 @@ public class MemberServiceImpl implements MemberService {
     private final TokenProvider tokenProvider;
     private final CurrentMemberUtil currentMemberUtil;
 
-    private final MemberReqDto memberReqDto;
-    private final MemberResDto memberResDto;
+    private final MemberRequest memberReqDto;
+    private final MemberResponse memberResDto;
 
     @Override
     @Transactional(rollbackFor = Exception.class)
-    public Long join(MemberReqDto memberDto){
+    public Long join(MemberRequest memberDto){
         if(!memberRepository.findByEmail(memberDto.getEmail()).isEmpty()){
             throw new DuplicateMemberException("Member already exists", ErrorCode.DUPLICATE_MEMBER);
         }
@@ -44,7 +44,7 @@ public class MemberServiceImpl implements MemberService {
 
     @Override
     @Transactional(rollbackFor = Exception.class)
-    public Map<String, Object> login(SignInDto signInDto){
+    public Map<String, Object> login(SignIn signInDto){
         Optional<Member> byEmail = memberRepository.findByEmail(signInDto.getEmail());
         if(byEmail.isEmpty()){
             throw new MemberNotFindException("Can't find member by email", ErrorCode.MEMBER_NOT_FIND);
@@ -69,17 +69,17 @@ public class MemberServiceImpl implements MemberService {
 
     @Override
     @Transactional(readOnly = true, rollbackFor = Exception.class)
-    public MemberResDto getMemberByIdx(Long memberIdx) {
+    public MemberResponse getMemberByIdx(Long memberIdx) {
         Member member = memberRepository.findById(memberIdx)
                 .orElseThrow(() -> new MemberNotFindException("Can't find member by email", ErrorCode.MEMBER_NOT_FIND));
-        return ResponseDtoUtil.mapping(member, MemberResDto.class);
+        return ResponseDtoUtil.mapping(member, MemberResponse.class);
     }
 
     @Override
     @Transactional(readOnly = true, rollbackFor = Exception.class)
-    public List<MemberResDto> getAllMember() {
+    public List<MemberResponse> getAllMember() {
         List<Member> all = memberRepository.findAll();
-        return ResponseDtoUtil.mapAll(all, MemberResDto.class);
+        return ResponseDtoUtil.mapAll(all, MemberResponse.class);
     }
 
     @Override
@@ -92,9 +92,9 @@ public class MemberServiceImpl implements MemberService {
 
     @Override
     @Transactional(readOnly = true, rollbackFor = Exception.class)
-    public MemberResDto findMe() {
+    public MemberResponse findMe() {
         Member member = currentMemberUtil.getCurrentMember();
-        return ResponseDtoUtil.mapping(member, MemberResDto.class);
+        return ResponseDtoUtil.mapping(member, MemberResponse.class);
     }
 
 

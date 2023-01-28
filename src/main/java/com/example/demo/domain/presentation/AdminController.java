@@ -1,6 +1,6 @@
-package com.example.demo.domain.contoller;
+package com.example.demo.domain.presentation;
 
-import com.example.demo.domain.dto.response.MemberResDto;
+import com.example.demo.domain.presentation.dto.response.MemberResponse;
 import com.example.demo.domain.service.AdminService;
 import com.example.demo.domain.service.MemberService;
 import com.example.demo.global.util.response.ResponseService;
@@ -20,12 +20,12 @@ public class AdminController {
     private final ResponseService responseService;
 
     @GetMapping("/member/{memberIdx}")
-    public SingleResultResponse<MemberResDto> getOneMember(@PathVariable Long memberIdx){
+    public SingleResultResponse<MemberResponse> getOneMember(@PathVariable Long memberIdx){
         return responseService.getSingleResult(memberService.getMemberByIdx(memberIdx));
     }
 
     @GetMapping("/member")
-    public ListResultResponse<MemberResDto> getAllmember(){
+    public ListResultResponse<MemberResponse> getAllmember(){
         return responseService.getListResult(memberService.getAllMember());
     }
 

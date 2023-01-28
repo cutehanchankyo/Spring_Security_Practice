@@ -1,4 +1,4 @@
-package com.example.demo.domain.dto.request;
+package com.example.demo.domain.presentation.dto.request;
 
 import com.example.demo.domain.Member;
 import com.example.demo.domain.Role;
@@ -8,7 +8,7 @@ import java.util.Collection;
 
 @Getter
 @AllArgsConstructor
-public class MemberReqDto {
+public class MemberRequest {
     private String email;
     private String password;
     private String name;

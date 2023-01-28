@@ -1,6 +1,6 @@
-package com.example.demo.domain.contoller;
+package com.example.demo.domain.presentation;
 
-import com.example.demo.domain.service.TokenRefrachService;
+import com.example.demo.domain.service.TokenRefreshService;
 import com.example.demo.global.util.response.result.SingleResultResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
@@ -10,7 +10,7 @@ import org.springframework.web.bind.annotation.*;
 @RequiredArgsConstructor
 public class RefrashTokenController {
     private final ResponseSeruvice responseSeruvice;
-    private final TokenRefrachService tokenRefrachService;
+    private final TokenRefreshService tokenRefrachService;
 
     @PostMapping("/refrash")
     public SingleResultResponse refreshAccessToken(@RequestHeader String refreshToken){
