@@ -25,7 +25,7 @@ import java.io.IOException;
 public class JwtRequestFilter extends OncePerRequestFilter {
 
     private final TokenProvider tokenProvider;
-    private final MyUserDetailService myUserDetailService;
+    private final MyUserDetailService memberService;
 
     @Override
     @SneakyThrows
