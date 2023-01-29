@@ -2,6 +2,7 @@ package com.example.demo.domain.presentation;
 
 import com.example.demo.domain.presentation.dto.request.MemberRequest;
 import com.example.demo.domain.presentation.dto.request.SignIn;
+import com.example.demo.domain.presentation.dto.response.MemberResponse;
 import com.example.demo.domain.service.MemberService;
 import com.example.demo.global.util.response.ResponseService;
 import com.example.demo.global.util.response.result.CommonResultResponse;
@@ -27,20 +28,20 @@ public class MemberController {
         return responseService.getSingleResult(memberService.login(signInDto));
     }
 
-    @PostMapping("logout")
-    public CommonResultRespnose logout(){
+    @PostMapping("/logout")
+    public CommonResultResponse logout(){
         memberService.logout();
         return responseService.getSuccessResult();
     }
 
     @DeleteMapping
-    public CommonResultRespnonse withdrawal(){
+    public CommonResultResponse withdrawal(){
         memberService.withdrawal();
         return responseService.getSuccessResult();
     }
 
     @GetMapping("/me")
-    public SingleResultResponse findMe(){
+    public SingleResultResponse<MemberResponse> findMe(){
         return responseService.getSingleResult(memberService.findMe());
     }
 }

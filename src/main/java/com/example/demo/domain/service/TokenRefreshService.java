@@ -6,5 +6,5 @@ import java.util.Map;
 
 @Service
 public interface TokenRefreshService {
-    Map refrash(String refrashToken);
+    Map refresh(String refrashToken);
 }

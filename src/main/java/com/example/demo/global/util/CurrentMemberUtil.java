@@ -15,14 +15,20 @@ import org.springframework.stereotype.Component;
 public class CurrentMemberUtil {
     private final MemberRepository memberRepository;
 
-    public static String getCurrentMail(){
+    public static String getCurrentEmail(){
         String email;
         Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         if(principal instanceof UserDetails){
             email = ((AuthDetails) principal).getEmail();
-        }else{
+        } else {
             email = principal.toString();
         }
         return email;
+    }
+
+    public Member getCurrentMember(){
+        String currentEmail = getCurrentEmail();
+        return memberRepository.findByEmail(currentEmail)
+                .orElseThrow(() -> new RuntimeException());
     }
 }

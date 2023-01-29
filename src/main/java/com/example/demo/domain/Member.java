@@ -24,8 +24,7 @@ public class Member {
 
     private String password;
 
-    private String refrashToken;
-
+    private String refreshToken;
 
     @Enumerated(EnumType.STRING) @Column(name = "Role")
     @ElementCollection(fetch = FetchType.EAGER)
@@ -33,7 +32,7 @@ public class Member {
     @Builder.Default
     private List<Role> roles = new ArrayList<>();
 
-    public void updateRefrachToken(String refrashToken){
-        this.refrashToken=refrashToken;
+    public void updateRefreshToken(String refreshToken){
+        this.refreshToken = refreshToken;
     }
 }

@@ -29,9 +29,6 @@ public class MemberServiceImpl implements MemberService {
     private final TokenProvider tokenProvider;
     private final CurrentMemberUtil currentMemberUtil;
 
-    private final MemberRequest memberReqDto;
-    private final MemberResponse memberResDto;
-
     @Override
     @Transactional(rollbackFor = Exception.class)
     public Long join(MemberRequest memberDto){
@@ -44,13 +41,13 @@ public class MemberServiceImpl implements MemberService {
 
     @Override
     @Transactional(rollbackFor = Exception.class)
-    public Map<String, Object> login(SignIn signInDto){
-        Optional<Member> byEmail = memberRepository.findByEmail(signInDto.getEmail());
+    public Map <String, Object> login(SignIn signIn){
+        Optional<Member> byEmail = memberRepository.findByEmail(signIn.getEmail());
         if(byEmail.isEmpty()){
             throw new MemberNotFindException("Can't find member by email", ErrorCode.MEMBER_NOT_FIND);
         }
         Member member = byEmail.get();
-        if(!passwordEncoder.matches(signInDto.getPassword(), member.getPassword())){
+        if(!passwordEncoder.matches(signIn.getPassword(), member.getPassword())){
             throw new PasswordNotCorrectException("Password Not Matches", ErrorCode.PASSWORD_NOT_CORRECT);
         }
         String accessToken = tokenProvider.generateAccessToken(member.getEmail());
