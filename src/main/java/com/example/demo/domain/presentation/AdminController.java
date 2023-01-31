@@ -29,6 +29,7 @@ public class AdminController {
         return responseService.getListResult(memberService.getAllMember());
     }
 
+
     @PatchMapping("/grant/member/{memberIdx}")
     public CommonResultResponse grantRole(@PathVariable Long memberIdx){
         adminService.grantRole(memberIdx);
