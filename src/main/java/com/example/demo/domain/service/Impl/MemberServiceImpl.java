@@ -39,6 +39,7 @@ public class MemberServiceImpl implements MemberService {
         return memberRepository.save(member).getId();
     }
 
+
     @Override
     @Transactional(rollbackFor = Exception.class)
     public Map <String, Object> login(SignIn signIn){
